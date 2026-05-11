@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import OcrResultModel from "../models/OcrResult.model.js";
 import { OcrResult } from "../types/ocr.result.js";
-import { IOcrRepository } from "./IOcr.repository.js";
+import { IOcrRepository } from "./Iocr.repository.js";
 
 
 @injectable()

@@ -1,8 +1,8 @@
 import { injectable, inject } from "inversify";
 
 import { IOcrService } from "./Iocr.service.js";
-import { IOcrRepository } from "../repositories/IOcr.repository.js";
-import { IOcrEngine } from "./IOcrEngine.js";
+import { IOcrRepository } from "../repositories/Iocr.repository.js";
+import { IOcrEngine } from "./IocrEngine.js";
 
 import { TYPES } from "../inversify/type.js";
 import { OcrResult } from "../types/ocr.result.js";

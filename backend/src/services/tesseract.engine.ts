@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import Tesseract from "tesseract.js";
-import { IOcrEngine } from "./IOcrEngine.js";
+import { IOcrEngine } from "./IocrEngine.js";
 
 @injectable()
 export class TesseractEngine implements IOcrEngine {

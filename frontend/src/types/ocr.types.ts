@@ -1,4 +1,3 @@
-// ── Aadhaar parsed response from the backend ─────────────────────────────────
 
 export interface IAadhaarResponse {
   aadhaarNumber: string | null
@@ -9,13 +8,12 @@ export interface IAadhaarResponse {
   pincode: string | null
 }
 
-// ── API envelope ─────────────────────────────────────────────────────────────
 
 export interface IApiSuccess {
   success: true
   message: string
   data: IAadhaarResponse
-  errors?: Record<string, string>   // partial-extraction warnings
+  errors?: Record<string, string>  
 }
 
 export interface IApiError {
@@ -26,7 +24,6 @@ export interface IApiError {
 
 export type IApiResponse = IApiSuccess | IApiError
 
-// ── Upload state ─────────────────────────────────────────────────────────────
 
 export interface IUploadedFiles {
   frontFile: File | null
@@ -38,7 +35,6 @@ export interface IPreviewUrls {
   backPreview: string | null
 }
 
-// ── OCR hook state ───────────────────────────────────────────────────────────
 
 export type OcrStatus = 'idle' | 'uploading' | 'processing' | 'success' | 'error'
 

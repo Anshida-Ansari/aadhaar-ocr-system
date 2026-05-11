@@ -5,7 +5,6 @@ import type {
   IApiResponse,
 } from '../types/ocr.types'
 
-// ── Hook ─────────────────────────────────────────────────────────────────────
 
 export function useOcr(): IOcrState & {
   processImages: (frontFile: File, backFile: File) => Promise<void>
@@ -18,7 +17,6 @@ export function useOcr(): IOcrState & {
     errorMessage: null,
   })
 
-  // Start processing files
   const processImages = async (frontFile: File, backFile: File) => {
     setState((prev) => ({
       ...prev,
@@ -30,14 +28,14 @@ export function useOcr(): IOcrState & {
 
     try {
       const formData = new FormData()
-      formData.append('front', frontFile)   // must match multer field name
-      formData.append('back', backFile)     // must match multer field name
+      formData.append('front', frontFile)  
+      formData.append('back', backFile)    
 
-      // Optional: Give it a slight delay to show the spinner moving to processing phase
-      // Normally axios upload progress handles this, but here's a simpler approach
+
       setState((prev) => ({ ...prev, status: 'processing' }))
 
-      const response = await axios.post<IApiResponse>('/api/ocr/process', formData, {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
+      const response = await axios.post<IApiResponse>(`${API_BASE_URL}/api/ocr/process`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
 
@@ -72,9 +70,7 @@ export function useOcr(): IOcrState & {
     }
   }
 
-  // Reset state to upload another card
-  const reset = () => {
-    setState({
+  const reset = () => {setState({
       status: 'idle',
       result: null,
       partialErrors: {},
