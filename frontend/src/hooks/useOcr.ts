@@ -1,9 +1,7 @@
 import { useState } from 'react'
-import axios, { AxiosError } from 'axios'
-import type {
-  IOcrState,
-  IApiResponse,
-} from '../types/ocr.types'
+import { AxiosError } from 'axios'
+import { ocrService } from '../services/ocr.service'
+import type { IOcrState } from '../types/ocr.types'
 
 
 export function useOcr(): IOcrState & {
@@ -34,12 +32,7 @@ export function useOcr(): IOcrState & {
 
       setState((prev) => ({ ...prev, status: 'processing' }))
 
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
-      const response = await axios.post<IApiResponse>(`${API_BASE_URL}/api/ocr/process`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
-
-      const data = response.data
+      const data = await ocrService.processImages(formData)
 
       if (data.success) {
         setState({

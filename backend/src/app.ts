@@ -3,13 +3,14 @@ import "reflect-metadata";
 import express, {
   type Request,
   type Response,
-  type NextFunction,
 } from "express";
 
 import cors from "cors";
 import dotenv from "dotenv";
 import { initContainer } from "./inversify/inversify.di.js";
 import { connectDB } from "./config/db.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
+import { ROUTES } from "./constants/route.constants.js";
 
 dotenv.config();
 
@@ -30,23 +31,9 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 const { default: router } = await import("./routes/ocr.routes.js");
-app.use("/api/ocr", router);
+app.use(`${ROUTES.API.BASE}${ROUTES.API.OCR.BASE}`, router);
 
-app.use(
-  (
-    err: any,
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    console.error(err);
-
-    res.status(500).json({
-      success: false,
-      message: err.message || "Internal Server Error",
-    });
-  }
-);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
