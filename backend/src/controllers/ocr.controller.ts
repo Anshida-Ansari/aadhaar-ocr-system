@@ -6,6 +6,7 @@ import { TYPES } from "../inversify/type.js";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../constants/messages.constants.js";
 import { ERROR_CODES, SUCCESS_CODES } from "../constants/status.codes.constants.js";
 import { IOcrController } from "./Iocr.controller.js";
+import { log } from "node:console";
 
 @injectable()
 export class OcrController implements IOcrController {
@@ -15,6 +16,7 @@ export class OcrController implements IOcrController {
   ) {}
 
   processOcr = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    console.log('is hitiing')
     try {
       const files = req.files as Record<string, Express.Multer.File[]>;
       const frontFile = files?.front?.[0];
