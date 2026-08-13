@@ -9,11 +9,14 @@ export class TesseractEngine implements IOcrEngine {
       const {
         data: { text },
 
-      } = await Tesseract.recognize(imageBuffer, "eng+mal");
+      } = await Tesseract.recognize(imageBuffer, "eng+mal", {
+        langPath: "./"
+      });
 
       return text;
-    } catch (error) {
-      throw new Error("OCR Engine failed to extract text");
+    } catch (error: any) {
+      console.error("OCR Error details:", error);
+      throw new Error(`OCR Engine failed to extract text: ${error?.message || error}`);
     }
   }
 }
