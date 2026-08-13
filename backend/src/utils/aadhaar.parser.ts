@@ -53,10 +53,13 @@ export class AadhaarParser {
     data.dob = dobMatch?.[1]?.replace(/-/g, "/") || undefined;
 
     // Gender
-    const genderMatch = text.match(/(male|female|other|transgender)/i);
-    data.gender = genderMatch
-      ? this.capitalize(genderMatch[0])
-      : undefined;
+    if (/(female|fema[il1]e|സ്ത്രീ)/i.test(text)) {
+      data.gender = "Female";
+    } else if (/\b(male|ma[il1]e|പുരുഷൻ)\b/i.test(text) || /(?<!fe)(male|ma[il1]e)/i.test(text)) {
+      data.gender = "Male";
+    } else if (/(other|transgender)/i.test(text)) {
+      data.gender = "Other";
+    }
 
     // Name extraction
     data.name = this.extractName(lines, data.dob);
