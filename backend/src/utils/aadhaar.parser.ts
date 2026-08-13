@@ -52,13 +52,19 @@ export class AadhaarParser {
     const dobMatch = text.match(this.dobRegex);
     data.dob = dobMatch?.[1]?.replace(/-/g, "/") || undefined;
 
-    // Gender
-    if (/(female|fema[il1]e|സ്ത്രീ)/i.test(text)) {
-      data.gender = "Female";
-    } else if (/\b(male|ma[il1]e|പുരുഷൻ)\b/i.test(text) || /(?<!fe)(male|ma[il1]e)/i.test(text)) {
-      data.gender = "Male";
-    } else if (/(other|transgender)/i.test(text)) {
-      data.gender = "Other";
+    // Gender (Handling spaced OCR artifacts like 'F E M A L E')
+    for (const line of lines) {
+      const cleanLine = line.replace(/[\s_.-]+/g, ""); // strip spaces and separators
+      if (/(female|fema[il1]e|fernale|farnale|സ്ത്രീ)/i.test(cleanLine)) {
+        data.gender = "Female";
+        break;
+      } else if (/(male|ma[il1]e|rnale|പുരുഷൻ)/i.test(cleanLine) && !/fe/i.test(cleanLine)) {
+        data.gender = "Male";
+        break;
+      } else if (/(transgender|other)/i.test(cleanLine)) {
+        data.gender = "Other";
+        break;
+      }
     }
 
     // Name extraction
