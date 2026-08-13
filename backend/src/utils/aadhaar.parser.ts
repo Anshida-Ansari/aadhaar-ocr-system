@@ -53,7 +53,7 @@ export class AadhaarParser {
     data.dob = dobMatch?.[1]?.replace(/-/g, "/") || undefined;
 
     // Gender
-    const genderMatch = text.match(/\b(male|female|other)\b/i);
+    const genderMatch = text.match(/(male|female|other|transgender)/i);
     data.gender = genderMatch
       ? this.capitalize(genderMatch[0])
       : undefined;
@@ -227,7 +227,7 @@ export class AadhaarParser {
     if (pinMatch) return pinMatch[1];
 
     const pins = Array.from(
-      (address ?? text).matchAll(/\b\d{6}\b/g)
+      text.matchAll(/\b\d{6}\b/g)
     ).map((m) => m[0]);
 
     return pins.length ? pins[pins.length - 1] : undefined;
